@@ -3,7 +3,8 @@ import React, { Fragment } from "react";
 import Navbar from "./app/Navbar";
 import PostsList from "./features/posts/NewPostsList";
 import AddPostForm from "./features/posts/NewAddPostForm";
-
+import ViewPostPage from "./features/posts/ViewPostPage";
+import UpdatePostPage from "./features/posts/UpdatePostPage";
 
 const App = () => {
     return (
@@ -17,6 +18,8 @@ const App = () => {
                      <PostsList />
                      /</Fragment>
                 )} />
+                <Route exact path="/posts/:postId" component={ViewPostPage} />
+                <Route exact path="/posts/update/:postId" component={UpdatePostPage} />
                 <Redirect to="/"/>
             </Switch>
           </div>
