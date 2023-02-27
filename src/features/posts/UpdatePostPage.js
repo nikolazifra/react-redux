@@ -8,22 +8,25 @@ function UpdatePostPage() {
   const params = useParams();
   const postId = params.postId
   const post = useAppSelector(state => state.posts.find(post => post.id === postId))
+  const authors = useAppSelector(state => state.users)
 
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
+  const [authorId, setAuthorId] = useState(post.authorId)
 
 
   const onTitleChanged = e => setTitle(e.target.value)
   const onContentChanged = e => setContent(e.target.value)
+  const onAuthorChanged = e => setAuthorId(e.target.value)
 
   const dispatch = useAppDispatch()
   const history = useHistory()
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(postUpdated({id: postId, title, content}))
+      dispatch(postUpdated({id: postId, title, content, authorId}))
       history.push(`/posts/${postId}`)
-      alert('Job done')
+      alert('Done with update')
     }
   }
 
@@ -35,6 +38,13 @@ function UpdatePostPage() {
       </section>
     )
   }
+
+  const canSave = Boolean(title) && Boolean(content) && Boolean(authorId)
+  const authorsOptions = authors.map(user => (
+    <option key={user.id} value={user.id}>
+      {user.name}
+    </option>
+  ))
 
 
   return (
@@ -50,6 +60,11 @@ function UpdatePostPage() {
           value={title}
           onChange={onTitleChanged}
         />
+        <label htmlFor="postAuthor">Author:</label>
+        <select id="postAuthor" value={authorId} onChange={onAuthorChanged}>
+          <option value=""></option>
+          {authorsOptions}
+        </select>
         <label htmlFor="postContent">Content:</label>
         <textarea
           id="postContent"
@@ -57,7 +72,7 @@ function UpdatePostPage() {
           value={content}
           onChange={onContentChanged}
         />
-        <button type="button" onClick={onSavePostClicked}>
+        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
         </button>
       </form>

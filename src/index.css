@@ -118,6 +118,13 @@ section h1 {
   border-radius: 7px;
 }
 
+.post-error {
+  padding: 0.25rem 0.25rem;
+  border: 1px solid rgb(190, 8, 8);
+  border-radius: 7px;
+  margin-top: 2.5rem;
+}
+
 .posts-list .post-excerpt + .post-excerpt {
   margin-top: 0.5rem;
 }

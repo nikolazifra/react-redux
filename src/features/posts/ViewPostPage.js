@@ -1,26 +1,32 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
+import { useAppSelector } from '../../app/hooks';
 
 function ViewPostPage() {
   const params = useParams();
   const postId = params.postId
-  const post = useSelector(state => state.posts.find(post => post.id === postId))
-
-
-
+  const posts = useAppSelector(state => state.posts)
+  const authors = useAppSelector(state => state.users)
+  const post = posts.find(post => post.id === postId)
   if (!post) {
     return (
       <section>
-        <h2>Post not found!</h2>
+        <article className="post">
+          <div className="post-error">
+            <span>Post not found!</span>
+          </div>
+        </article>
       </section>
     )
   }
-
+  const author = authors.find((user) => user.id === post.authorId)
   return (
     <section>
       <article className="post">
         <h2>{post.title}</h2>
+        <div>
+          <span>by {author ? author.name : 'Unknown author'}</span>
+        </div>
         <p className="post-content">{post.content}</p>
         <Link to={`/posts/update/${post.id}`} className="button">
           Update Post
